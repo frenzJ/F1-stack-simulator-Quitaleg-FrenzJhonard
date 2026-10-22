@@ -1,7 +1,7 @@
 # F1 Stack Simulator
 
-**Name:** [Your Full Name]
-**Section:** [Your Section]
+**Name:** Frenz Jhonard R. Quitaleg
+**Section:** BSIT WMT 2-2
 **Original starter repository:** https://github.com/Jackson-Soriano/e26_temp.git
 
 ## Description
