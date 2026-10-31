@@ -64,9 +64,63 @@ class Stack {
 
 const stack = new Stack()
 
+// Show a message under the simulator
+function showMessage(text) {
+    $("#message").text(text);
+}
+
+// Redraw the stack blocks. The newest item is prepended, so it shows on top.
+function renderStack() {
+    $("#stack").empty();
+    for (let i = 0; i < stack.count; i++) {
+        const color = (i % 2 == 0) ? "bg-primary" : "bg-success";
+        $("#stack").prepend($("<div>").addClass(`row ${color} push`).text(stack.items[i]));
+    }
+}
+
 $(document).ready(function(){
-    $("#stack").prepend(`<div class="row bg-primary push">${stack.push(100)[0]}</div>`);
-    $("#stack").prepend(`<div class="row bg-success push">${stack.push(200)[0]}</div>`);
-    $("#stack").prepend(`<div class="row bg-primary push">${stack.push(300)[0]}</div>`);
-    $("#stack").prepend(`<div class="row bg-success push">${stack.push(400)[0]}</div>`);
+    // Push: add the typed value to the top
+    $("#pushBtn").on("click", function(){
+        const value = $("#dataInput").val().trim();
+        if (value === "") {
+            showMessage("Please type a value first.");
+            return;
+        }
+        stack.push(value);
+        $("#dataInput").val("").focus();
+        showMessage("");
+        renderStack();
+    });
+
+    // Pop: remove the top and show it in the deleted area
+    $("#popBtn").on("click", function(){
+        if (stack.count == 0) {
+            showMessage("The stack is empty. Nothing to pop.");
+            return;
+        }
+        const removed = stack.pop();
+        $("#deleted").append($("<div>").addClass("row pop text-bg-danger border border-light").text(removed));
+        showMessage("");
+        renderStack();
+    });
+
+    // Peek: highlight the top without removing it
+    $("#peekBtn").on("click", function(){
+        if (stack.count == 0) {
+            showMessage("The stack is empty. Nothing to peek.");
+            return;
+        }
+        showMessage("");
+        const $top = $("#stack .push").first();
+        $top.addClass("highlight");
+        setTimeout(function(){ $top.removeClass("highlight"); }, 1500);
+    });
+
+    // Clear: reset the stack and the deleted area
+    $("#clearBtn").on("click", function(){
+        stack.clear();
+        $("#deleted").empty();
+        showMessage("");
+        renderStack();
+    });
 });
